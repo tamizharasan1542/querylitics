@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Database Dashboard</title>
+  
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+   <script type="script.js"></script>
+  <style>
+  :root {
+  --bg-dark: #111827;
+  --card-bg: #1F2937;
+  --card-hover: #374151;
+  --text-primary: #F9FAFB;
+  --text-secondary: #D1D5DB;
+  --blue-500: #3B82F6;
+  --green-500: #10B981;
+  --purple-500: #8B5CF6;
+  --border-color: #374151;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  line-height: 1.5;
+  padding: 1.5rem;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.card {
+  background-color: var(--card-bg);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+              0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.card-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-primary);
+}
+
+.card-title i {
+  width: 24px;
+  height: 24px;
+  color: var(--blue-500);
+}
+
+.db-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.db-button {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 2px solid var(--border-color);
+  background-color: rgba(55, 65, 81, 0.3);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.db-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.mysql:hover { border-color: var(--blue-500); }
+.postgresql:hover { border-color: #6366F1; }
+.cassandra:hover { border-color: var(--green-500); }
+.mongodb:hover { border-color: #34D399; }
+
+.db-name {
+  color: var(--text-primary);
+  font-weight: 500;
+  text-align: center;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .info-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.info-card {
+  background-color: rgba(55, 65, 81, 0.5);
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+
+.info-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.info-header h3 {
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.icon-blue { color: var(--blue-500); }
+.icon-green { color: var(--green-500); }
+.icon-purple { color: var(--purple-500); }
+
+.storage-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.storage-row {
+  display: flex;
+  justify-content: space-between;
+  color: var(--text-secondary);
+}
+
+.progress-bar {
+  width: 100%;
+  height: 0.5rem;
+  background-color: #4B5563;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: var(--green-500);
+  border-radius: 9999px;
+  transition: width 0.3s ease;
+}
+
+.system-info {
+  color: var(--text-secondary);
+}
+
+.system-info p {
+  margin-bottom: 0.25rem;
+}
+
+.chart-container {
+  position: relative;
+  height: 400px;
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+
+canvas#dbChart {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.button-group {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.action-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+}
+
+.action-button i {
+  width: 20px;
+  height: 20px;
+}
+
+.primary {
+  background-color: var(--blue-500);
+  color: white;
+}
+
+.primary:hover {
+  background-color: #2563EB;
+  transform: translateY(-1px);
+}
+
+.secondary {
+  background-color: var(--green-500);
+  color: white;
+}
+
+.secondary:hover {
+  background-color: #059669;
+  transform: translateY(-1px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .button-group {
+    flex-direction: column;
+  }
+  
+  .action-button {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .chart-container {
+    height: 300px;
+  }
+}
+  </style>
+</head>
+  <div class="space-y-6">
+          <!-- Generate Test Data Section -->
+          <div class="bg-gray-800 rounded-lg shadow-xl p-6">
+            <h2 class="text-2xl font-semibold mb-4 flex items-center text-white">
+              <i data-lucide="database" class="mr-2"></i>
+              Generate Test Data
+            </h2>
+            <div class="grid grid-cols-2 gap-4 mb-6" id="dbSelection">
+              <button class="w-full p-4 rounded-lg border-2 border-gray-700 hover:border-blue-500 bg-gray-700/30 transition-all" onclick="openGenerateModal('mysql')">
+                <div class="font-medium text-white">MySQL</div>
+              </button>
+              <button class="w-full p-4 rounded-lg border-2 border-gray-700 hover:border-indigo-500 bg-gray-700/30 transition-all" onclick="openGenerateModal('postgresql')">
+                <div class="font-medium text-white">PostgreSQL</div>
+              </button>
+              <button class="w-full p-4 rounded-lg border-2 border-gray-700 hover:border-green-500 bg-gray-700/30 transition-all" onclick="openGenerateModal('cassandra')">
+                <div class="font-medium text-white">Cassandra</div>
+              </button>
+              <button class="w-full p-4 rounded-lg border-2 border-gray-700 hover:border-emerald-500 bg-gray-700/30 transition-all" onclick="openGenerateModal('mongodb')">
+                <div class="font-medium text-white">MongoDB</div>
+              </button>
+            </div>
+          </div>
+
+          <!-- System Information -->
+          <div class="bg-gray-800 rounded-lg shadow-xl p-6">
+            <h2  class="text-2xl font-semibold mb-4 flex items-center text-white">
+              <i data-lucide="cpu" class="mr-2"></i>
+              <p id="nodetb">System Information</p>
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <!-- Time -->
+              <div class="bg-gray-700/50 p-4 rounded-lg">
+                <div class="flex items-center justify-between mb-2">
+                  <h3 class="text-lg font-medium text-white">Time</h3>
+                  <i data-lucide="clock" class="w-5 h-5 text-blue-400"></i>
+                </div>
+				<p class="text-gray-300" id="nametb"></p>
+                <p class="text-gray-300" id="currentTime">Loading...</p>
+              </div>
+
+              <!-- Storage -->
+              <div class="bg-gray-700/50 p-4 rounded-lg">
+                <div class="flex items-center justify-between mb-2">
+                  <h3 class="text-lg font-medium text-white" id="tbstorage" >Storage</h3>
+                  <i data-lucide="hard-drive" class="w-5 h-5 text-green-400"></i>
+                </div>
+                <div class="space-y-2">
+                  <div class="flex justify-between text-gray-300">
+                    <span id="tablesize">Used:</span>
+                    <span id="used">45.2 GB</span>
+                  </div>
+                  <div class="w-full bg-gray-600 rounded-full h-2">
+                    <div id="widbar" class="bg-green-500 h-2 rounded-full" style="width: 45%"></div>
+                  </div>
+                  <div class="flex justify-between text-gray-300">
+                    <span id="rowsize">Total:</span>
+                    <span id="rowtb">100 GB</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- OS Info -->
+              <div class="bg-gray-700/50 p-4 rounded-lg">
+                <div class="flex items-center justify-between mb-2">
+                  <h3 class="text-lg font-medium text-white">System</h3>
+                  <i data-lucide="monitor" class="w-5 h-5 text-purple-400"></i>
+                </div>
+                <div class="space-y-1 text-gray-300">
+				<p id="os">`OS: ${osdata.os}`</p>
+				                 <p id="browser">Browser: ${osdata.browser}</p>
+				                 <p id="architecture">Architecture: ${osdata.architecture}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+    <!-- Performance Chart -->
+    <div class="card">
+      <h2 class="card-title">
+        <i data-lucide="bar-chart-2"></i>
+        Database Performance Comparison
+      </h2>
+      <div class="chart-container">
+        <canvas id="dbChart"></canvas>
+      </div>
+      <div class="button-group">
+        <button class="action-button primary">
+          <i data-lucide="bar-chart-2"></i>
+          Compare Databases
+        </button>
+        <button class="action-button secondary">
+          <i data-lucide="play"></i>
+          Execute Query
+        </button>
+      </div>
+    </div>
+  </div>
+    <script type="script.js"></script>
+
+  <script>
+    // Initialize Lucide icons
+    let dbChart = null;
+
+    function initializeChart() {
+        const ctx = document.getElementById('dbChart');
+        if (!ctx) {
+            console.error('Canvas element not found for Chart.js');
+            return;
+        }
+
+        // Destroy existing chart if it exists
+        if (dbChart) {
+            dbChart.destroy();
+        }
+
+        // Default performance data
+        const defaultData = {
+            labels: ['MySQL', 'PostgreSQL', 'Cassandra', 'MongoDB'],
+            datasets: [{
+                label: 'Query Time (ms)',
+                data: [120, 85, 95, 75],
+                borderColor: '#3b82f6',
+                backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                fill: true,
+                tension: 0.4,
+                pointRadius: 6,
+                pointBackgroundColor: '#3b82f6',
+                borderWidth: 2
+            }]
+        };
+
+        // Create new chart
+        dbChart = new Chart(ctx, {
+            type: 'line',
+            data: defaultData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    intersect: false,
+                    mode: 'index'
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: {
+                            color: '#f3f4f6',
+                            font: { size: 14, weight: 'bold' },
+                            padding: 20,
+                            usePointStyle: true,
+                            pointStyle: 'circle'
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(17, 24, 39, 0.9)',
+                        titleColor: '#f3f4f6',
+                        bodyColor: '#f3f4f6',
+                        padding: 12,
+                        borderRadius: 8,
+                        callbacks: {
+                            label: (context) => `${context.dataset.label}: ${context.raw} ms`
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: 'rgba(243, 244, 246, 0.1)' },
+                        ticks: {
+                            color: '#f3f4f6',
+                            font: { size: 12 },
+                            callback: (value) => `${value} ms`
+                        },
+                        title: {
+                            display: true,
+                            text: 'Response Time (milliseconds)',
+                            color: '#f3f4f6',
+                            font: { size: 14, weight: 'bold' }
+                        }
+                    },
+                    x: {
+                        grid: { color: 'rgba(243, 244, 246, 0.1)' },
+                        ticks: {
+                            color: '#f3f4f6',
+                            font: { size: 12, weight: 'bold' }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // Simulate Database Test
+    async function performDatabaseTest() {
+        const queryTimes = [120, 85, 95, 75]; // Simulated times
+        console.log("Performing database test...");
+
+        // Update chart with new data
+        if (dbChart) {
+            dbChart.data.datasets[0].data = queryTimes;
+            dbChart.update();
+        }
+    }
+
+    // Add button click handlers
+    document.querySelectorAll('.db-button').forEach(button => {
+        button.addEventListener('click', () => {
+            const dbName = button.querySelector('.db-name').textContent;
+            console.log('Selected database:', dbName);
+        });
+    });
+
+    // Add event listeners for action buttons
+    document.querySelector('.primary')?.addEventListener('click', () => {
+        console.log('Running database comparison...');
+        performDatabaseTest();
+    });
+
+    document.querySelector('.secondary')?.addEventListener('click', () => {
+        console.log('Executing query...');
+        performDatabaseTest();
+    });
+
+    // Initialize chart after DOM is ready
+    setTimeout(() => {
+        console.log("Initializing chart...");
+        initializeChart();
+    }, 500);
+    
+
+  </script>
+</body>
+</html>

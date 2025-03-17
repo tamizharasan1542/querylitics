@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings - DB Analyzer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <div class="bg-gray-800 rounded-lg shadow-xl p-6">
+    <h2 class="text-2xl font-semibold mb-6 flex items-center text-white">
+      <i data-lucide="settings" class="mr-2"></i>
+      Settings
+    </h2>
+
+    <div class="space-y-6">
+      <!-- Database Connections -->
+      <div class="bg-gray-700/50 rounded-lg p-4">
+        <h3 class="text-lg font-medium text-white mb-4">Database Connections</h3>
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+              <i data-lucide="database" class="w-5 h-5 text-blue-400"></i>
+              <span class="text-gray-300">MySQL Connection</span>
+            </div>
+            <button class="text-blue-400 hover:text-blue-300">Configure</button>
+          </div>
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+              <i data-lucide="database" class="w-5 h-5 text-indigo-400"></i>
+              <span class="text-gray-300">PostgreSQL Connection</span>
+            </div>
+            <button class="text-blue-400 hover:text-blue-300">Configure</button>
+          </div>
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+              <i data-lucide="database" class="w-5 h-5 text-green-400"></i>
+              <span class="text-gray-300">Cassandra Connection</span>
+            </div>
+            <button class="text-blue-400 hover:text-blue-300">Configure</button>
+          </div>
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+              <i data-lucide="database" class="w-5 h-5 text-emerald-400"></i>
+              <span class="text-gray-300">MongoDB Connection</span>
+            </div>
+            <button class="text-blue-400 hover:text-blue-300">Configure</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Analysis Settings -->
+      <div class="bg-gray-700/50 rounded-lg p-4">
+        <h3 class="text-lg font-medium text-white mb-4">Analysis Settings</h3>
+        <div class="space-y-4">
+          <div>
+            <label class="flex items-center space-x-2">
+              <input type="checkbox" class="rounded bg-gray-700 border-gray-600 text-blue-500 focus:ring-blue-500">
+              <span class="text-gray-300">Enable performance metrics</span>
+            </label>
+          </div>
+          <div>
+            <label class="flex items-center space-x-2">
+              <input type="checkbox" class="rounded bg-gray-700 border-gray-600 text-blue-500 focus:ring-blue-500">
+              <span class="text-gray-300">Show query optimization suggestions</span>
+            </label>
+          </div>
+          <div>
+            <label class="flex items-center space-x-2">
+              <input type="checkbox" class="rounded bg-gray-700 border-gray-600 text-blue-500 focus:ring-blue-500">
+              <span class="text-gray-300">Enable real-time analysis</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Theme Settings -->
+      <div class="bg-gray-700/50 rounded-lg p-4">
+        <h3 class="text-lg font-medium text-white mb-4">Theme Settings</h3>
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-300 mb-2">Color Theme</label>
+            <select class="w-full bg-gray-700 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500">
+              <option value="dark">Dark Theme</option>
+              <option value="light">Light Theme</option>
+              <option value="system">System Default</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-300 mb-2">Font Size</label>
+            <select class="w-full bg-gray-700 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500">
+              <option value="sm">Small</option>
+              <option value="md">Medium</option>
+              <option value="lg">Large</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-6 flex justify-end space-x-4">
+      <button class="px-4 py-2 text-gray-300 hover:text-white">
+        Reset to Defaults
+      </button>
+      <button class="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600">
+        Save Changes
+      </button>
+    </div>
+  </div>
+
+  <script>
+   
+    lucide.createIcons();
+  </script>
+</body>
+</html>
